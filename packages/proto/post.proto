@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package nuxtgrpc;
+
+message Post {
+  string title = 1;
+  string description = 2;
+  int32 time = 3;
+}
+
+message Empty {
+
+}
+
+service PostService {
+  rpc GetPosts(GetPostsRequest) returns (GetPostsResponse);
+  rpc CreatePost(CreatePostRequest) returns (Empty);
+}
+
+message GetPostsRequest {
+}
+
+message GetPostsResponse {
+  repeated Post posts = 1;
+}
+
+message CreatePostRequest {
+  string title = 1;
+  string description = 2;
+}
+
+message CreatePostResponse {
+}

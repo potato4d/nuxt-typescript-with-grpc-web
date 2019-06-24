@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PROTOC_GEN_TS_PATH="./node_modules/.bin/protoc-gen-ts"
+
+OUT_DIR_FRONTEND="../frontend/proto"
+OUT_DIR_BACKEND="../backend/proto"
+
+protoc \
+    --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" \
+    --js_out="import_style=commonjs,binary:${OUT_DIR_FRONTEND}" \
+    --ts_out="service=true:${OUT_DIR_FRONTEND}" \
+    post.proto
+
+protoc \
+    --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" \
+    --js_out="import_style=commonjs,binary:${OUT_DIR_BACKEND}" \
+    --ts_out="service=true:${OUT_DIR_BACKEND}" \
+    post.proto
