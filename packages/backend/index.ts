@@ -1,10 +1,10 @@
 import * as grpc from 'grpc'
 import * as protoLoader from '@grpc/proto-loader'
-import post_pb from './proto/post_pb'
-import post_pb_service from './proto/post_pb_service'
+import user_pb from './proto/user_pb'
+import user_pb_service from './proto/user_pb_service'
 
-const PROTO_PATH = __dirname + '/../proto/post.proto'
-const post_proto = grpc.loadPackageDefinition(
+const PROTO_PATH = __dirname + '/proto/user.proto'
+const user_proto = grpc.loadPackageDefinition(
   protoLoader.loadSync(
     PROTO_PATH,
     {
@@ -16,41 +16,42 @@ const post_proto = grpc.loadPackageDefinition(
     })
 )
 
-const DATABASE_POSTS: post_pb.Post[] = []
-
-function getPosts(
-  call: grpc.ServerUnaryCall<post_pb.GetPostsRequest>,
-  callback: grpc.sendUnaryData<post_pb.GetPostsResponse>,
-) {
-  const response = new post_pb.GetPostsResponse()
-  response.setPostsList(DATABASE_POSTS)
-  return callback(null, response)
+var USERDATA = {
+  username: 'potato4d',
+  bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 }
 
-function createPost(
-  call: grpc.ServerUnaryCall<post_pb.CreatePostRequest>,
-  callback: grpc.sendUnaryData<post_pb.CreatePostResponse>,
+function GetUser(
+  call: grpc.ServerUnaryCall<user_pb.GetUserRequest.AsObject>,
+  callback: grpc.sendUnaryData<user_pb.GetUserResponse.AsObject>,
 ) {
-  const response = new post_pb.CreatePostResponse()
-  const post = new post_pb.Post()
-  post.setTime(new Date().getTime())
-  post.setTitle(call.request.getTitle())
-  post.setDescription(call.request.getDescription())
-  DATABASE_POSTS.push(post)
-  callback(null, response)
+  return callback(null, {
+    user: {
+      username: USERDATA.username,
+      bio: USERDATA.bio
+    }
+  })
+}
+
+function UpdateUser(
+  call: grpc.ServerUnaryCall<user_pb.UpdateUserRequest.AsObject>,
+  callback: grpc.sendUnaryData<user_pb.UpdateUserResponse.AsObject>,
+) {
+  USERDATA.username = call.request.username
+  USERDATA.bio = call.request.bio
+  callback(null, {})
 }
 
 function main() {
   const server = new grpc.Server()
   server.addService(
-    post_proto.nuxtgrpc.PostService.service,
+    user_proto.nuxtgrpc.UserService.service,
     {
-      getPosts,
-      createPost
+      GetUser,
+      UpdateUser
     }
   )
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure())
   server.start()
-  console.log('Start server')
 }
 main()

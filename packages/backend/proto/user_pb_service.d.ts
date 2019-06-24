@@ -1,31 +1,31 @@
 // package: nuxtgrpc
-// file: post.proto
+// file: user.proto
 
-import * as post_pb from "./post_pb";
+import * as user_pb from "./user_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
-type PostServiceGetPosts = {
+type UserServiceGetUser = {
   readonly methodName: string;
-  readonly service: typeof PostService;
+  readonly service: typeof UserService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof post_pb.GetPostsRequest;
-  readonly responseType: typeof post_pb.GetPostsResponse;
+  readonly requestType: typeof user_pb.GetUserRequest;
+  readonly responseType: typeof user_pb.GetUserResponse;
 };
 
-type PostServiceCreatePost = {
+type UserServiceUpdateUser = {
   readonly methodName: string;
-  readonly service: typeof PostService;
+  readonly service: typeof UserService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof post_pb.CreatePostRequest;
-  readonly responseType: typeof post_pb.Empty;
+  readonly requestType: typeof user_pb.UpdateUserRequest;
+  readonly responseType: typeof user_pb.Empty;
 };
 
-export class PostService {
+export class UserService {
   static readonly serviceName: string;
-  static readonly GetPosts: PostServiceGetPosts;
-  static readonly CreatePost: PostServiceCreatePost;
+  static readonly GetUser: UserServiceGetUser;
+  static readonly UpdateUser: UserServiceUpdateUser;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -56,27 +56,27 @@ interface BidirectionalStream<ReqT, ResT> {
   on(type: 'status', handler: (status: Status) => void): BidirectionalStream<ReqT, ResT>;
 }
 
-export class PostServiceClient {
+export class UserServiceClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
-  getPosts(
-    requestMessage: post_pb.GetPostsRequest,
+  getUser(
+    requestMessage: user_pb.GetUserRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: post_pb.GetPostsResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: user_pb.GetUserResponse|null) => void
   ): UnaryResponse;
-  getPosts(
-    requestMessage: post_pb.GetPostsRequest,
-    callback: (error: ServiceError|null, responseMessage: post_pb.GetPostsResponse|null) => void
+  getUser(
+    requestMessage: user_pb.GetUserRequest,
+    callback: (error: ServiceError|null, responseMessage: user_pb.GetUserResponse|null) => void
   ): UnaryResponse;
-  createPost(
-    requestMessage: post_pb.CreatePostRequest,
+  updateUser(
+    requestMessage: user_pb.UpdateUserRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: post_pb.Empty|null) => void
+    callback: (error: ServiceError|null, responseMessage: user_pb.Empty|null) => void
   ): UnaryResponse;
-  createPost(
-    requestMessage: post_pb.CreatePostRequest,
-    callback: (error: ServiceError|null, responseMessage: post_pb.Empty|null) => void
+  updateUser(
+    requestMessage: user_pb.UpdateUserRequest,
+    callback: (error: ServiceError|null, responseMessage: user_pb.Empty|null) => void
   ): UnaryResponse;
 }
 

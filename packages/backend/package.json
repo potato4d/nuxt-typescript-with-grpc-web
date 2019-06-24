@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
   "dependencies": {
     "@grpc/proto-loader": "^0.5.1",
     "@improbable-eng/grpc-web": "^0.9.6",

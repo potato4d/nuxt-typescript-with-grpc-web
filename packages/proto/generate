@@ -9,10 +9,12 @@ protoc \
     --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" \
     --js_out="import_style=commonjs,binary:${OUT_DIR_FRONTEND}" \
     --ts_out="service=true:${OUT_DIR_FRONTEND}" \
-    post.proto
+    user.proto
+cp user.proto $OUT_DIR_FRONTEND/user.proto
 
 protoc \
     --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" \
     --js_out="import_style=commonjs,binary:${OUT_DIR_BACKEND}" \
     --ts_out="service=true:${OUT_DIR_BACKEND}" \
-    post.proto
+    user.proto
+cp user.proto $OUT_DIR_BACKEND/user.proto

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package nuxtgrpc;
+
+message User {
+  string username = 1;
+  string bio = 2;
+}
+
+message Empty {
+
+}
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (Empty);
+}
+
+message GetUserRequest {
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  string username = 1;
+  string bio = 2;
+}
+
+message UpdateUserResponse {
+}

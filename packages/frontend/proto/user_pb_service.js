@@ -1,45 +1,45 @@
 // package: nuxtgrpc
-// file: post.proto
+// file: user.proto
 
-var post_pb = require("./post_pb");
+var user_pb = require("./user_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
 
-var PostService = (function () {
-  function PostService() {}
-  PostService.serviceName = "nuxtgrpc.PostService";
-  return PostService;
+var UserService = (function () {
+  function UserService() {}
+  UserService.serviceName = "nuxtgrpc.UserService";
+  return UserService;
 }());
 
-PostService.GetPosts = {
-  methodName: "GetPosts",
-  service: PostService,
+UserService.GetUser = {
+  methodName: "GetUser",
+  service: UserService,
   requestStream: false,
   responseStream: false,
-  requestType: post_pb.GetPostsRequest,
-  responseType: post_pb.GetPostsResponse
+  requestType: user_pb.GetUserRequest,
+  responseType: user_pb.GetUserResponse
 };
 
-PostService.CreatePost = {
-  methodName: "CreatePost",
-  service: PostService,
+UserService.UpdateUser = {
+  methodName: "UpdateUser",
+  service: UserService,
   requestStream: false,
   responseStream: false,
-  requestType: post_pb.CreatePostRequest,
-  responseType: post_pb.Empty
+  requestType: user_pb.UpdateUserRequest,
+  responseType: user_pb.Empty
 };
 
-exports.PostService = PostService;
+exports.UserService = UserService;
 
-function PostServiceClient(serviceHost, options) {
+function UserServiceClient(serviceHost, options) {
   this.serviceHost = serviceHost;
   this.options = options || {};
 }
 
-PostServiceClient.prototype.getPosts = function getPosts(requestMessage, metadata, callback) {
+UserServiceClient.prototype.getUser = function getUser(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(PostService.GetPosts, {
+  var client = grpc.unary(UserService.GetUser, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -66,11 +66,11 @@ PostServiceClient.prototype.getPosts = function getPosts(requestMessage, metadat
   };
 };
 
-PostServiceClient.prototype.createPost = function createPost(requestMessage, metadata, callback) {
+UserServiceClient.prototype.updateUser = function updateUser(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(PostService.CreatePost, {
+  var client = grpc.unary(UserService.UpdateUser, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -97,5 +97,5 @@ PostServiceClient.prototype.createPost = function createPost(requestMessage, met
   };
 };
 
-exports.PostServiceClient = PostServiceClient;
+exports.UserServiceClient = UserServiceClient;
 
