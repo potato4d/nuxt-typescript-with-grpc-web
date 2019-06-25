@@ -1,10 +1,10 @@
 import { grpc } from 'grpc-web-client'
-import { GetUserRequest, GetUserResponse, UpdateUserRequest } from '../proto/user_pb'
+import { GetUserRequest, GetUserResponse, UpdateUserRequest, User } from '../proto/user_pb'
 import { UserServiceClient, UserService } from '../proto/user_pb_service'
 const HOST = 'http://localhost:8000'
 
 export const state = () => ({
-  user: []
+  user: null
 })
 
 export const getters = {
@@ -12,22 +12,23 @@ export const getters = {
 }
 
 export const mutations = {
-  setUsers(state, { user }) {
-    state.user = [...user]
+  setUser(state, { user }) {
+    state.user = user
   }
 }
 
 export const actions = {
-  async getUser() {
-    const client = new UserServiceClient(HOST)
+  async getUser({ commit }) {
+    const client = grpc.client(UserService.GetUser, {
+      host: 'http://localhost:8000',
+    });
     const request = new GetUserRequest()
-    console.log(client)
-    // client.getUser(request, (err: any, response: any) => {
-    //   console.log(
-    //     err,
-    //     response.getMessage
-    //   )
-    // })
+    client.start()
+    client.send(request)
+    client.onMessage((message) => {
+      const { user } = message.toObject() as { user: User.AsObject }
+      commit('setUser', { user })
+    });
   },
   async updateUser() {
     // const client = new UserServiceClient(HOST)

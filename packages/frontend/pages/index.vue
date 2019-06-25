@@ -1,6 +1,13 @@
 <template>
   <div class="container">
-
+    <h2>User Data</h2>
+    <div v-if="user">
+      <p><b>{{user.username}}</b></p>
+      <p>{{user.bio}}</p>
+    </div>
+    <div v-else>
+      <p>Loading...</p>
+    </div>
   </div>
 </template>
 
@@ -8,8 +15,15 @@
 import Vue from 'vue'
 export default Vue.extend({
   mounted() {
-    this.$store.dispatch('getUser')
+    setTimeout(() => {
+      this.$store.dispatch('getUser')
+    }, 1000)
     // this.$store.dispatch('createPost')
+  },
+  computed: {
+    user() {
+      return this.$store.getters['user']
+    }
   }
 })
 </script>
@@ -25,6 +39,11 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  padding: 16px;
+}
+
+h2 {
+  margin-bottom: 16px;
 }
 
 *,
