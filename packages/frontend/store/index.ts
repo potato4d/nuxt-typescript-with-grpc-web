@@ -20,7 +20,7 @@ export const mutations = {
 export const actions = {
   async getUser({ commit }) {
 
-    // こっちは message.toObject() が {} になる
+    // これでいける
     grpc.invoke(UserService.GetUser, {
       request: new GetUserRequest(),
       host: 'http://localhost:8000',
@@ -33,7 +33,20 @@ export const actions = {
       }
     })
 
-    // こっちでもどのみち message.toObject() が {} になる
+    // 古い方法はこれだけどこれは型がつかない
+    // grpc.unary(UserService.GetUser, {
+    //   request: new GetUserRequest(),
+    //   host: 'http://localhost:8000',
+    //   onEnd: response => {
+    //     const { status, message } = response
+    //     if (status === grpc.Code.OK && message) {
+    //       const { user } = message.toObject() as { user: User.AsObject }
+    //       commit('setUser', { user })
+    //     }
+    //   }
+    // })
+
+    // 古い方法はこれだけどこれは型がつかない
     // const client = grpc.client(UserService.GetUser, {
     //   host: 'http://localhost:8000',
     // });
