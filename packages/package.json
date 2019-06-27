@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@nuxt/typescript": "^2.8.1",
-    "ts-node": "^8.3.0"
-  }
-}
