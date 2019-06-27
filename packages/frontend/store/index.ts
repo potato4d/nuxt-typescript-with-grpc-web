@@ -59,14 +59,6 @@ export const actions = {
     // })
   },
   async updateUser() {
-    // const client = new UserServiceClient(HOST)
-    // const request = new UpdateUserRequest()
-    // request.setTitle('Example User')
-    // request.setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')
-    // client.updateUser(request, (err: any, response: any) => {
-    //   console.log(
-    //     response
-    //   )
-    // })
+    // 一旦実装したけど検証追従が大変なので辞めた
   }
 }
