@@ -1,4 +1,4 @@
-import { grpc } from 'grpc-web-client'
+import { grpc } from '@improbable-eng/grpc-web'
 import { GetUserRequest, GetUserResponse, UpdateUserRequest, User } from '../proto/user_pb'
 import { UserServiceClient, UserService } from '../proto/user_pb_service'
 const HOST = 'http://localhost:8000'
@@ -19,16 +19,31 @@ export const mutations = {
 
 export const actions = {
   async getUser({ commit }) {
-    const client = grpc.client(UserService.GetUser, {
+
+    // こっちは message.toObject() が {} になる
+    grpc.invoke(UserService.GetUser, {
+      request: new GetUserRequest(),
       host: 'http://localhost:8000',
-    });
-    const request = new GetUserRequest()
-    client.start()
-    client.send(request)
-    client.onMessage((message) => {
-      const { user } = message.toObject() as { user: User.AsObject }
-      commit('setUser', { user })
-    });
+      onMessage: (message: GetUserResponse) => {
+        const { user } = message.toObject()
+        commit('setUser', { user })
+      },
+      onEnd: () => {
+
+      }
+    })
+
+    // こっちでもどのみち message.toObject() が {} になる
+    // const client = grpc.client(UserService.GetUser, {
+    //   host: 'http://localhost:8000',
+    // });
+    // const request = new GetUserRequest()
+    // client.start()
+    // client.send(request)
+    // client.onMessage((message) => {
+    //   const { user } = message.toObject() as { user: User.AsObject }
+    //   commit('setUser', { user })
+    // })
   },
   async updateUser() {
     // const client = new UserServiceClient(HOST)
